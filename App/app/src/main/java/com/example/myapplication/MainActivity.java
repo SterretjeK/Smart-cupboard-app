@@ -22,7 +22,6 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView mTextViewResult;
     private OkHttpClient client;
     private String url = "http://84.82.182.149:3000";
 
@@ -31,9 +30,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        mTextViewResult = (TextView)findViewById(R.id.hoi);
-
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
@@ -41,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new HomeFragment(client, url)).commit();
-
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -56,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                         selectedFragment = new HomeFragment(client, url);
                         break;
                     case R.id.nav_pantry:
-                        selectedFragment = new PantryFragment();
+                        selectedFragment = new PantryFragment(client, url);
                         break;
                     case R.id.nav_add:
                         selectedFragment = new AddFragment();

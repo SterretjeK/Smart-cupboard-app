@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,8 @@ public class HomeFragment extends Fragment {
 
     OkHttpClient client;
     String baseUrl;
+    TextView temperatureText;
+    TextView humidityText;
 
     public HomeFragment(OkHttpClient client, String baseUrl) {
         this.client = client;
@@ -36,6 +39,11 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        temperatureText = view.findViewById(R.id.info_text_Temperature);
+        humidityText = view.findViewById(R.id.info_text_Humidity);
 
         Request request = new Request.Builder().url(baseUrl + "/home").build();
 
@@ -50,13 +58,12 @@ public class HomeFragment extends Fragment {
                     Gson gson = new Gson();
                     JsonObject entity = gson.fromJson(response.body().string(), JsonObject.class);
 
-                    String myResponse = "";
-                    myResponse = entity.get("temperature").getAsString();
-                    myResponse += entity.get("humidity").getAsString();
+                    temperatureText.setText(entity.get("temperature").getAsString());
+                    humidityText.setText(entity.get("humidity").getAsString());
                 }
             }
         });
 
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
     }
 }
