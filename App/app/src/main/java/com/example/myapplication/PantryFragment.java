@@ -13,9 +13,13 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -49,9 +53,8 @@ public class PantryFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     Gson gson = new Gson();
-                    JsonArray products = gson.fromJson(response.body().string(), JsonArray.class);
-                    JsonObject firstProduct = products.get(0).getAsJsonObject();
-                    Log.d("HENK", firstProduct.get("name").getAsString());
+                    Type listType = new TypeToken<ArrayList<JsonObject>>() {}.getType();
+                    ArrayList<JsonObject> productList = gson.fromJson(response.body().string(), listType);
                 }
             }
         });
