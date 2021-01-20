@@ -58,8 +58,8 @@ public class HomeFragment extends Fragment {
                     Gson gson = new Gson();
                     JsonObject entity = gson.fromJson(response.body().string(), JsonObject.class);
 
-                    temperatureText.setText(entity.get("temperature").getAsString());
-                    humidityText.setText(entity.get("humidity").getAsString());
+                    temperatureText.setText(entity.get("temperature").getAsString() + "°C");
+                    humidityText.setText(entity.get("humidity").getAsString() + "%");
                 }
             }
         });
