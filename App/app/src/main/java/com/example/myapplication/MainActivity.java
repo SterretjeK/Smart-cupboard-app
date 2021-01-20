@@ -23,6 +23,8 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextViewResult;
+    private OkHttpClient client;
+    private String url = "http://84.82.182.149:3000";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,72 +37,40 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
+        client = new OkHttpClient();
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new HomeFragment()).commit();
+                new HomeFragment(client, url)).commit();
 
 
-        OkHttpClient client = new OkHttpClient();
-
-        String url = "http://84.82.182.149:3000/home";
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    Gson gson = new Gson();
-                    JsonObject entity = gson.fromJson(response.body().string(), JsonObject.class);
-
-                    String myResponse = "";
-                    myResponse = entity.get("temperature").getAsString();
-                    myResponse += entity.get("humidity").getAsString();
-
-                    final String theResponse = myResponse;
-
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mTextViewResult.setText(theResponse);
-                        }
-                    });
-                }
-            }
-        });
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
+        new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment selectedFragment = null;
 
-                    switch (item.getItemId()) {
-                        case R.id.nav_home:
-                            selectedFragment = new HomeFragment();
-                            break;
-                        case R.id.nav_pantry:
-                            selectedFragment = new PantryFragment();
-                            break;
-                        case R.id.nav_add:
-                            selectedFragment = new AddFragment();
-                            break;
-                        case R.id.nav_shopping_list:
-                            selectedFragment = new ShoppingListFragment();
-                            break;
-                        case R.id.nav_recipes:
-                            selectedFragment = new RecipesFragment();
-                            break;
-                    }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            selectedFragment).commit();
-                    return true;
+                switch (item.getItemId()) {
+                    case R.id.nav_home:
+                        selectedFragment = new HomeFragment(client, url);
+                        break;
+                    case R.id.nav_pantry:
+                        selectedFragment = new PantryFragment();
+                        break;
+                    case R.id.nav_add:
+                        selectedFragment = new AddFragment();
+                        break;
+                    case R.id.nav_shopping_list:
+                        selectedFragment = new ShoppingListFragment();
+                        break;
+                    case R.id.nav_recipes:
+                        selectedFragment = new RecipesFragment();
+                        break;
                 }
-            };
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        selectedFragment).commit();
+                return true;
+            }
+        };
 }
