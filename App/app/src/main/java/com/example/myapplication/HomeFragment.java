@@ -56,10 +56,11 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     Gson gson = new Gson();
-                    JsonObject entity = gson.fromJson(response.body().string(), JsonObject.class);
-
-                    temperatureText.setText(entity.get("temperature").getAsString() + "°C");
-                    humidityText.setText(entity.get("humidity").getAsString() + "%");
+                    final JsonObject entity = gson.fromJson(response.body().string(), JsonObject.class);
+                    getActivity().runOnUiThread(() -> {
+                        temperatureText.setText(entity.get("temperature").getAsString() + "°C");
+                        humidityText.setText(entity.get("humidity").getAsString() + "%");
+                    });
                 }
             }
         });
