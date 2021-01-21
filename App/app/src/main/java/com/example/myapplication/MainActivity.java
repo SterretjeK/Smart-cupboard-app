@@ -55,10 +55,20 @@ public class MainActivity extends AppCompatActivity {
                         // Get new FCM registration token
                         String token = task.getResult();
 
-                        // Log and toast
-                        String msg = token;
-                        Log.d("HENK", msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        Request request = new Request.Builder().url(url + "/registertoken/" + token).build();
+
+                        client.newCall(request).enqueue(new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                e.printStackTrace();
+                            }
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                if (response.isSuccessful()) {
+                                    Log.d("HENK", "Registered token successfully: " + token);
+                                }
+                            }
+                        });
                     }
                 });
     }
