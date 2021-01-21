@@ -28,6 +28,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private OkHttpClient client;
+    private AddItemDialog dialog;
     private String url = "http://84.82.182.149:3000";
 
     @Override
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         client = new OkHttpClient();
+
+        dialog = new AddItemDialog(this);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new HomeFragment(client, url)).commit();
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                         selectedFragment = new PantryFragment(client, url);
                         break;
                     case R.id.nav_add:
-                        selectedFragment = new AddFragment();
+                        dialog.show();
                         break;
                     case R.id.nav_shopping_list:
                         selectedFragment = new ShoppingListFragment();
@@ -96,8 +99,10 @@ public class MainActivity extends AppCompatActivity {
                         selectedFragment = new RecipesFragment();
                         break;
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        selectedFragment).commit();
+                if(selectedFragment != null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            selectedFragment).commit();
+                }
                 return true;
             }
         };
