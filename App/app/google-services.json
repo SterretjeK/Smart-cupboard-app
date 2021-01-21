@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "499252995527",
+    "project_id": "smart-cupboard-utwente",
+    "storage_bucket": "smart-cupboard-utwente.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499252995527:android:3d35f4d82a944e6bd425e2",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499252995527-iu0dr6o1hla6klh10s57hgdl8s85jd7j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX_YmGL61itQYQr3z5zb0OYn7DIC6nZD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499252995527-iu0dr6o1hla6klh10s57hgdl8s85jd7j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
