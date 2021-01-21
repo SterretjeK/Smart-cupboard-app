@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private OkHttpClient client;
     private AddItemDialog dialog;
-    private String url = "http://84.82.182.149:3000";
+    static final public String url = "http://84.82.182.149:3000";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         client = new OkHttpClient();
 
-        dialog = new AddItemDialog(this);
+        dialog = new AddItemDialog(this, client);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new HomeFragment(client, url)).commit();
