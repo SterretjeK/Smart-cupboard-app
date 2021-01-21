@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -32,6 +34,8 @@ public class PantryFragment extends Fragment {
     OkHttpClient client;
     String baseUrl;
 
+    PantryAdapter adapter;
+
     public PantryFragment(OkHttpClient client, String baseUrl) {
         this.client = client;
         this.baseUrl = baseUrl;
@@ -44,6 +48,8 @@ public class PantryFragment extends Fragment {
 
         Request request = new Request.Builder().url(baseUrl + "/pantry").build();
 
+        RecyclerView recyclerView = view.findViewById(R.id.pantryList);
+
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -55,9 +61,17 @@ public class PantryFragment extends Fragment {
                     Gson gson = new Gson();
                     Type listType = new TypeToken<ArrayList<JsonObject>>() {}.getType();
                     ArrayList<JsonObject> productList = gson.fromJson(response.body().string(), listType);
+
+                    getActivity().runOnUiThread(() -> {
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        adapter = new PantryAdapter(productList);
+                        recyclerView.setAdapter(adapter);
+                    });
+
                 }
             }
         });
+
         return view;
     }
 }
