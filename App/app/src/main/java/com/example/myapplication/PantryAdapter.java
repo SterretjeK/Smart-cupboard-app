@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.google.gson.JsonObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder> {
 
@@ -21,13 +24,16 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
      * (custom ViewHolder).
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+        private final TextView textViewTitle;
+        private final TextView textViewDate;
+
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
 
-            textView = (TextView) view.findViewById(R.id.itemTitle);
+            textViewTitle = (TextView) view.findViewById(R.id.itemTitle);
+            textViewDate = (TextView) view.findViewById(R.id.itemDate);
         }
     }
 
@@ -47,10 +53,20 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.ViewHolder
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        String timestamp_in_string = products.get(position).get("timestamp").getAsString();
+        long dv = Long.parseLong(timestamp_in_string);// its need to be in milisecond
+        Date df = new Date(dv);
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(df);
+        c.add(Calendar.DATE, products.get(position).get("expirationDays").getAsInt());
+
+        String vv = new SimpleDateFormat("dd-MM-yyyy").format(c.getTime());
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.textView.setText(products.get(position).get("name").getAsString());
+        viewHolder.textViewTitle.setText(products.get(position).get("name").getAsString());
+        viewHolder.textViewDate.setText(vv);
     }
 
     // Return the size of your dataset (invoked by the layout manager)

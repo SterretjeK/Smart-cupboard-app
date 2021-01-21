@@ -27,6 +27,7 @@
             android:textSize="20sp"/>
 
         <TextView
+            android:id="@+id/itemDate"
             android:gravity="end"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
