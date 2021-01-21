@@ -11,4 +11,16 @@
         android:layout_height="wrap_content"
         android:hint="Name product"/>
 
+    <Button
+        android:id="@+id/button_close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Close"/>
+
+    <Button
+        android:id="@+id/button_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"/>
+
 </LinearLayout>
